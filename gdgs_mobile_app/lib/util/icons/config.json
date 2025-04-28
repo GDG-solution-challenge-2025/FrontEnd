@@ -1,0 +1,72 @@
+{
+  "name": "NavigationIcon",
+  "css_prefix_text": "",
+  "css_use_suffix": false,
+  "hinting": true,
+  "units_per_em": 1000,
+  "ascent": 850,
+  "glyphs": [
+    {
+      "uid": "w3nzesrlbezu6f30q7ytyq919p6gdlb6",
+      "css": "home",
+      "code": 59392,
+      "src": "typicons"
+    },
+    {
+      "uid": "a42f298da5c64e646a5d532724cd6e15",
+      "css": "homeOutline",
+      "code": 59393,
+      "src": "typicons"
+    },
+    {
+      "uid": "c62cbc7fa604e32cc19731a3bb29be79",
+      "css": "mapOutline",
+      "code": 62072,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "79beb8c7fcd56e1985b70e9a120cbcbf",
+      "css": "map",
+      "code": 62073,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "f3dc2d6d8fe9cf9ebff84dc260888cdf",
+      "css": "heartOutline",
+      "code": 59394,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "d73eceadda1f594cec0536087539afbf",
+      "css": "heart",
+      "code": 59395,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "dpxunrtmigvk6jm0ieo7axfsgzx4awll",
+      "css": "settings",
+      "code": 59396,
+      "src": "typicons"
+    },
+    {
+      "uid": "3a89ddb1c81111c15d6c4e26cc3c546a",
+      "css": "settingsOutline",
+      "code": 59397,
+      "src": "typicons"
+    },
+    {
+      "uid": "b7a6d098e5190800572498a8763a4119",
+      "css": "map",
+      "code": 59392,
+      "src": "custom_icons",
+      "selected": false,
+      "svg": {
+        "path": "M62.5 250V916.7L354.2 750 687.5 916.7 979.2 750V83.3L687.5 250 354.2 83.3 62.5 250ZM354.2 83.3V750M687.5 250V916.7",
+        "width": 1042
+      },
+      "search": [
+        "map"
+      ]
+    }
+  ]
+}
