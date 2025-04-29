@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gdgs_mobile_app/util/router/router.dart';
-import 'package:gdgs_mobile_app/util/theme/color_theme.dart';
+import 'package:gdgs_mobile_app/util/theme/theme.dart';
 
 void main() {
   runApp(const MainApp());

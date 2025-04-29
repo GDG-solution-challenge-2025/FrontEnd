@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gdgs_mobile_app/util/router/routes.dart';
-import 'package:go_router/go_router.dart';
+import 'package:gdgs_mobile_app/util/values/layout_const.dart';
+import 'package:gdgs_mobile_app/util/values/str_const.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -8,37 +8,56 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-      ),
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              context.goNamed(AppRoute.foodUpload);
-            },
-            child: const Text(
-              "Upload Food",
+      body: Padding(
+        padding: const EdgeInsets.only(
+          left: defaultHorizontalMarginValue,
+          right: defaultHorizontalMarginValue,
+          top: defaultTopMarginValue,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  mainHomeTitle,
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  mainHomeSubTitle,
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        color: Theme.of(context).colorScheme.outline,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              context.goNamed(AppRoute.globalCuisine);
-            },
-            child: const Text(
-              "global Cuisine",
+            const SizedBox(height: defaultLayoutContentMargin),
+            SizedBox(
+              width: double.infinity,
+              height: 160,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                ),
+                child: const Text('photo',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )),
+              ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              context.goNamed(AppRoute.foodViewDetail);
-            },
-            child: const Text(
-              "View Food Detail",
-            ),
-          ),
-          // Add more widgets here as needed
-        ],
+            // Add more widgets here as needed
+          ],
+        ),
       ),
     );
   }

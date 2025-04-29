@@ -22,3 +22,6 @@ flutter:
   - family:  NavigationIcon
     fonts:
       - asset: assets/fonts/NavigationIcon.ttf
+  - family:  Pretendard
+    fonts:
+      - asset: assets/fonts/PretendardVariable.ttf
