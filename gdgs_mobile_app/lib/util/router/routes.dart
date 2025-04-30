@@ -1,10 +1,10 @@
+import 'package:gdgs_mobile_app/screen/detail_screens/food_upload_screen.dart';
+import 'package:gdgs_mobile_app/screen/detail_screens/food_view_detail_screen.dart';
+import 'package:gdgs_mobile_app/screen/detail_screens/global_cuisine_screen.dart';
 import 'package:gdgs_mobile_app/screen/navigators/food_history_screen.dart';
 import 'package:gdgs_mobile_app/screen/navigators/food_recomend_screen.dart';
 import 'package:gdgs_mobile_app/screen/navigators/home_screen.dart';
 import 'package:gdgs_mobile_app/screen/navigators/user_setting_screen.dart';
-import 'package:gdgs_mobile_app/screen/util_screen/food_upload_screen.dart';
-import 'package:gdgs_mobile_app/screen/util_screen/food_view_detail_screen.dart';
-import 'package:gdgs_mobile_app/screen/util_screen/global_cuisine_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRoute {

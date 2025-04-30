@@ -4,3 +4,5 @@ const String mainHomeSubTitle = 'Upload a food photo to search';
 
 ///font Pretendard family
 const String fontPretendard = 'Pretendard';
+
+const foodImageSamplePath = 'assets/image/food/food_sample_img.jpg';

@@ -6,3 +6,6 @@ const defaultTopMarginValue = 96.0;
 
 ///layout bottom margin value
 const defaultLayoutContentMargin = 16.0;
+
+///layout content margin value
+const defaultLayoutDistance = 72.0;
