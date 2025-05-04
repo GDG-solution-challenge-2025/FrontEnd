@@ -5,6 +5,9 @@ import 'package:gdgs_mobile_app/screen/navigators/food_history_screen.dart';
 import 'package:gdgs_mobile_app/screen/navigators/food_recomend_screen.dart';
 import 'package:gdgs_mobile_app/screen/navigators/home_screen.dart';
 import 'package:gdgs_mobile_app/screen/navigators/user_setting_screen.dart';
+import 'package:gdgs_mobile_app/screen/user_control/login_screen.dart';
+import 'package:gdgs_mobile_app/screen/user_control/signup_screen.dart';
+import 'package:gdgs_mobile_app/screen/user_control/splash_screen.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRoute {
@@ -15,6 +18,9 @@ class AppRoute {
   static const String foodHistory = 'food-history';
   static const String settings = 'settings';
   static const String foodRecomend = 'food-recomend';
+  static const String login = 'login';
+  static const String signup = 'signup';
+  static const String splash = 'splash';
 }
 
 //main navigator screens
@@ -66,4 +72,22 @@ final globalCuisineRoutes = GoRoute(
   path: '/${AppRoute.globalCuisine}',
   name: AppRoute.globalCuisine,
   builder: (context, state) => const GlobalCuisineScreen(),
+);
+
+final loginRoutes = GoRoute(
+  path: '/${AppRoute.login}',
+  name: AppRoute.login,
+  builder: (context, state) => const LoginScreen(),
+);
+
+final splashRoutes = GoRoute(
+  path: '/${AppRoute.splash}',
+  name: AppRoute.splash,
+  builder: (context, state) => const SplashScreen(),
+);
+
+final signupRoutes = GoRoute(
+  path: '/${AppRoute.signup}',
+  name: AppRoute.signup,
+  builder: (context, state) => const SignupScreen(),
 );
