@@ -63,9 +63,12 @@ final foodUploadRoutes = GoRoute(
 );
 
 final foodViewDetailRoutes = GoRoute(
-  path: '/${AppRoute.foodViewDetail}',
+  path: '/${AppRoute.foodViewDetail}/:foodName/:imgData',
   name: AppRoute.foodViewDetail,
-  builder: (context, state) => const FoodViewDetailScreen(),
+  builder: (context, state) => FoodViewDetailScreen(
+    foodName: state.pathParameters['foodName'] ?? 'Name not found',
+    imgData: state.pathParameters['imgData'],
+  ),
 );
 
 final globalCuisineRoutes = GoRoute(
@@ -80,14 +83,14 @@ final loginRoutes = GoRoute(
   builder: (context, state) => const LoginScreen(),
 );
 
-final splashRoutes = GoRoute(
-  path: '/${AppRoute.splash}',
-  name: AppRoute.splash,
-  builder: (context, state) => const SplashScreen(),
-);
-
 final signupRoutes = GoRoute(
   path: '/${AppRoute.signup}',
   name: AppRoute.signup,
   builder: (context, state) => const SignupScreen(),
+);
+
+final splashRoutes = GoRoute(
+  path: '/${AppRoute.splash}',
+  name: AppRoute.splash,
+  builder: (context, state) => const SplashScreen(),
 );

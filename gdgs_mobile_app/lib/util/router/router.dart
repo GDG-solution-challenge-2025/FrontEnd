@@ -7,8 +7,13 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/${AppRoute.splash}',
+  initialLocation: '/${AppRoute.home}',
   routes: [
+    splashRoutes,
+    loginRoutes,
+    signupRoutes,
+
+    // Main navigator screens
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => LayoutScaffold(
         navigationShell: navigationShell,

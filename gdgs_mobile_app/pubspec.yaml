@@ -9,7 +9,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # flutter_native_splash: ^2.4.6
+  flutter_rating_bar: ^4.0.1
   go_router: ^15.1.1
+
+# flutter_native_splash:
+#     color: "#FFFFFF"
+#     image: assets/image/logo.png
+
+#     android_12:
+#       color: "#FFFFFF"
+#       image: assets/image/logo.png
 
 dev_dependencies:
   flutter_test:
@@ -28,4 +38,5 @@ flutter:
       - asset: assets/fonts/PretendardVariable.ttf
 
   assets:
+    - assets/image/
     - assets/image/food/

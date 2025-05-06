@@ -8,14 +8,14 @@ class FoodListTile extends StatelessWidget {
     this.leadingWidget,
     this.trailingWidget,
     this.subTitle,
-    this.foodImgUrl,
+    this.foodImg,
     this.onTap,
   });
   String title;
   Widget? trailingWidget;
   Widget? leadingWidget;
   Text? subTitle;
-  String? foodImgUrl;
+  String? foodImg;
   Function? onTap;
 
   @override

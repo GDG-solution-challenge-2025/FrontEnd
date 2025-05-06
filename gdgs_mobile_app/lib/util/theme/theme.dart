@@ -11,4 +11,5 @@ ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   textTheme: textTheme,
   fontFamily: fontPretendard,
+  useMaterial3: true,
 );

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gdgs_mobile_app/widget/Texts/text_title.dart';
+import 'package:gdgs_mobile_app/widget/Texts/title_text.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

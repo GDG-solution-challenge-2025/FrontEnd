@@ -19,7 +19,11 @@ class FoodImgCard extends StatelessWidget {
       width: 120,
       height: 150,
       padding: const EdgeInsets.all(defaultLayoutContentMargin),
-      margin: const EdgeInsets.all(defaultLayoutContentMargin),
+      margin: const EdgeInsets.only(
+          top: defaultLayoutContentMargin / 2,
+          left: defaultLayoutContentMargin,
+          right: defaultLayoutContentMargin,
+          bottom: defaultLayoutContentMargin / 2),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(10),
