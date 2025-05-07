@@ -81,6 +81,9 @@ final loginRoutes = GoRoute(
   path: '/${AppRoute.login}',
   name: AppRoute.login,
   builder: (context, state) => const LoginScreen(),
+  routes: [
+    signupRoutes,
+  ],
 );
 
 final signupRoutes = GoRoute(

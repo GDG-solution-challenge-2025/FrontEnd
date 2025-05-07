@@ -5,14 +5,12 @@ import 'package:go_router/go_router.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
-final router = GoRouter(
+final GoRouter router = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: '/${AppRoute.home}',
+  initialLocation: '/${AppRoute.splash}',
   routes: [
     splashRoutes,
     loginRoutes,
-    signupRoutes,
-
     // Main navigator screens
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => LayoutScaffold(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const Color mainColor = Color(0xFF592401);
 const Color textSecondaryColor = Color(0xFF666F7B);
-const Color btnTextColor = Color(0xFFBF7160);
+const Color textThirdaryColor = Color(0xFFBF7160);
 const Color chipSelectColor = Color(0xFFEE906F);
 const Color chipUnSelectColor = Color(0xFFF2ECEB);
 const Color chipTextColor = Color(0xFF333333);
@@ -14,3 +14,7 @@ const Color btnUnEableColor = Color(0xFFD4D4D4);
 const Color btnEableColor = Color(0xFF592401);
 const Color likeBtnColor = Color(0xFFD9626B);
 const Color startBtnColor = Color(0xFFFBDB5A);
+const Color loginTextColor = Color(0xFF2C2C2C);
+const Color signupTextColor = Color(0xFF5D5D5D);
+const Color btnTextColor = Colors.white;
+const Color titleTextColor = Colors.black;

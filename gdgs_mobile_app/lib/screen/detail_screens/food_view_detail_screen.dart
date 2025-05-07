@@ -75,7 +75,7 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
                 Text(
                   widget.foodName,
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        color: btnTextColor,
+                        color: textThirdaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                 ),

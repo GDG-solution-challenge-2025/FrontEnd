@@ -6,10 +6,14 @@ class InputTextField extends StatelessWidget {
     super.key,
     required this.titleName,
     required this.hintText,
+    required this.textController,
+    this.onTextChange,
   });
 
   String titleName = 'Dish name';
   String hintText = 'required';
+  TextEditingController textController;
+  Function(String)? onTextChange;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,7 @@ class InputTextField extends StatelessWidget {
           ),
           const SizedBox(height: defaultLayoutContentMargin),
           TextField(
+            controller: textController,
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
@@ -51,6 +56,7 @@ class InputTextField extends StatelessWidget {
                 ),
               ),
             ),
+            onChanged: onTextChange,
           ),
         ],
       ),

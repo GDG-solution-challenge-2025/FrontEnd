@@ -78,11 +78,13 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
             InputTextField(
               titleName: "Dish name",
               hintText: "required",
+              textController: TextEditingController(),
             ),
             const SizedBox(height: defaultLayoutContentMargin),
             InputTextField(
               titleName: "Country of origin",
               hintText: "optional",
+              textController: TextEditingController(),
             ),
             const SizedBox(height: defaultLayoutContentMargin),
             SizedBox(

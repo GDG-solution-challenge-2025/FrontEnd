@@ -6,3 +6,5 @@ const String mainHomeSubTitle = 'Upload a food photo to search';
 const String fontPretendard = 'Pretendard';
 
 const foodImageSamplePath = 'assets/image/food/food_sample_img.jpg';
+
+const logoImagePath = 'assets/image/logo.png';
