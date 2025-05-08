@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gdgs_mobile_app/util/router/routes.dart';
 import 'package:gdgs_mobile_app/util/values/layout_const.dart';
 import 'package:gdgs_mobile_app/widget/Buttons/food_switch_ocr_btn.dart';
-import 'package:gdgs_mobile_app/widget/Texts/input_text_field.dart';
 import 'package:gdgs_mobile_app/widget/Texts/title_text.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FoodUploadScreen extends StatefulWidget {
   const FoodUploadScreen({super.key});
@@ -15,6 +17,41 @@ class FoodUploadScreen extends StatefulWidget {
 
 class _FoodUploadScreenState extends State<FoodUploadScreen> {
   bool isPhotoState = true; // ture = Food, false = OCR
+  XFile? imageFile;
+
+  Future<void> _pickImageFromCamera() async {
+    final ImagePicker picker = ImagePicker();
+    try {
+      final XFile? pickedFile = await picker.pickImage(
+        source: ImageSource.camera, // 카메라 실행
+      );
+
+      if (pickedFile != null) {
+        setState(() {
+          imageFile = pickedFile;
+        });
+        print("카메라에서 이미지 선택됨: ${imageFile!.path}");
+        // TODO: 선택된 이미지로 다음 작업 수행 (예: 화면에 표시, 업로드 등)
+      } else {
+        print("이미지 선택이 취소되었습니다.");
+      }
+    } catch (e) {
+      print("이미지 선택 중 오류 발생: $e");
+      // TODO: 사용자에게 오류 알림
+    }
+  }
+
+  Future<void> _pickImageFromGallery() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = pickedFile;
+      });
+      print("갤러리에서 이미지 선택됨: ${imageFile!.path}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,19 +83,22 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
             SizedBox(
               width: 280,
               height: 160,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  elevation: 4.0,
-                  shadowColor: Colors.black.withOpacity(0.25),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                ),
-                onPressed: () {},
-                child: const Text('phto upload'),
-              ),
+              child: imageFile != null
+                  ? Image.file(File(imageFile!.path))
+                  : ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor:
+                            Theme.of(context).colorScheme.onPrimary,
+                        elevation: 4.0,
+                        shadowColor: Colors.black.withOpacity(0.25),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                      onPressed: _pickImageFromCamera,
+                      child: const Text('phto upload'),
+                    ),
             ),
             const SizedBox(height: defaultLayoutContentMargin),
             SizedBox(
@@ -75,17 +115,6 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
                 child: SizedBox(
               height: defaultLayoutDistance,
             )),
-            InputTextField(
-              titleName: "Dish name",
-              hintText: "required",
-              textController: TextEditingController(),
-            ),
-            const SizedBox(height: defaultLayoutContentMargin),
-            InputTextField(
-              titleName: "Country of origin",
-              hintText: "optional",
-              textController: TextEditingController(),
-            ),
             const SizedBox(height: defaultLayoutContentMargin),
             SizedBox(
               width: double.infinity,

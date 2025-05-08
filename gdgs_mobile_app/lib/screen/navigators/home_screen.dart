@@ -191,60 +191,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: defaultLayoutDistance,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TitleText(
-                    text: "Article",
-                  ),
-                  const SizedBox(
-                    height: defaultLayoutContentMargin,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 220,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 180,
-                              width: 240,
-                              margin: const EdgeInsets.only(
-                                right: defaultLayoutContentMargin,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.outline,
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: defaultLayoutContentMargin,
-                            ),
-                            Text(
-                              "Article Title $index",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.copyWith(
-                                    color: Colors.black,
-                                  ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
         ),
