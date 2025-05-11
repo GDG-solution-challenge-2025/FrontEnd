@@ -1,5 +1,5 @@
 ///default horizontal margin values for layout
-const defaultHorizontalMarginValue = 26.0;
+const defaultHorizontalMargin = 26.0;
 
 ///layout top margin value
 const defaultTopMarginValue = 96.0;

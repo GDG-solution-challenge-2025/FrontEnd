@@ -12,6 +12,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      scrollBehavior: ScrollConfiguration.of(context).copyWith(
+        overscroll: false,
+      ),
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       routerConfig: router,

@@ -24,8 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(
-          left: defaultHorizontalMarginValue,
-          right: defaultHorizontalMarginValue,
+          left: defaultHorizontalMargin,
+          right: defaultHorizontalMargin,
           top: defaultTopMarginValue,
         ),
         child: SingleChildScrollView(
@@ -98,7 +98,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: "Global Cuisine",
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.goNamed(AppRoute.globalCuisine);
+                          },
                           child: Text(
                             "More",
                             style: Theme.of(context)
@@ -178,7 +180,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           return FoodListTile(
                             title: 'Food Name',
-                            onTap: () {},
+                            onTap: () {
+                              context.goNamed(AppRoute.foodViewDetailGoHome,
+                                  pathParameters: {
+                                    "foodName": 'foodName $index',
+                                    "imgData": imageNullMsg,
+                                  });
+                            },
                             leadingWidget: Text('${index + 1}'),
                             trailingWidget: const Icon(
                               Icons.arrow_forward_ios_rounded,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gdgs_mobile_app/util/values/color_const.dart';
 import 'package:gdgs_mobile_app/util/values/layout_const.dart';
+import 'package:gdgs_mobile_app/util/values/number_const.dart';
 
 class InputTextField extends StatelessWidget {
   InputTextField({
@@ -7,13 +9,17 @@ class InputTextField extends StatelessWidget {
     required this.titleName,
     required this.hintText,
     required this.textController,
-    this.onTextChange,
+    this.errorMsg,
+    this.onSubmitted,
+    this.onChanged,
   });
 
   String titleName = 'Dish name';
   String hintText = 'required';
   TextEditingController textController;
-  Function(String)? onTextChange;
+  String? errorMsg = "error";
+  Function(String)? onChanged;
+  Function(String)? onSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +42,7 @@ class InputTextField extends StatelessWidget {
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Theme.of(context).colorScheme.primary,
-                  width: 1.0,
+                  width: textFieldBorderWidth,
                   style: BorderStyle.solid,
                 ),
                 borderRadius: const BorderRadius.all(
@@ -51,12 +57,24 @@ class InputTextField extends StatelessWidget {
               focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.blue,
-                  width: 2.0,
+                  width: textFieldBorderWidth,
                   style: BorderStyle.solid,
                 ),
               ),
+              errorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: errorTextColor,
+                  width: textFieldBorderWidth,
+                  style: BorderStyle.solid,
+                ),
+              ),
+              errorText: errorMsg,
+              errorStyle: Theme.of(context).textTheme.labelLarge!.copyWith(
+                    color: errorTextColor,
+                  ),
             ),
-            onChanged: onTextChange,
+            onChanged: onChanged,
+            onSubmitted: onSubmitted,
           ),
         ],
       ),

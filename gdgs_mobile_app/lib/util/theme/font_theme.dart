@@ -28,15 +28,19 @@ const textTheme = TextTheme(
     fontWeight: FontWeight.w500,
   ),
   titleLarge: TextStyle(
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: FontWeight.w500,
   ),
   titleMedium: TextStyle(
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: FontWeight.w500,
   ),
   titleSmall: TextStyle(
-    fontSize: 12,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+  ),
+  labelLarge: TextStyle(
+    fontSize: 12.0,
     fontWeight: FontWeight.w500,
   ),
 );

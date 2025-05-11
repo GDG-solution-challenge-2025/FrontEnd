@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gdgs_mobile_app/util/router/routes.dart';
 import 'package:gdgs_mobile_app/util/values/layout_const.dart';
+import 'package:gdgs_mobile_app/util/values/str_const.dart';
 import 'package:gdgs_mobile_app/widget/Buttons/food_switch_ocr_btn.dart';
 import 'package:gdgs_mobile_app/widget/Texts/title_text.dart';
 import 'package:go_router/go_router.dart';
@@ -56,11 +57,13 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        scrolledUnderElevation: 0.0,
+      ),
       body: Padding(
         padding: const EdgeInsets.only(
-          left: defaultHorizontalMarginValue,
-          right: defaultHorizontalMarginValue,
+          left: defaultHorizontalMargin,
+          right: defaultHorizontalMargin,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -125,7 +128,8 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
                     AppRoute.foodViewDetail,
                     pathParameters: {
                       'foodName': 'foodName1',
-                      'imgData': 'imgData1',
+                      'imgData':
+                          imageFile != null ? imageFile!.path : imageNullMsg,
                     },
                   );
                 },

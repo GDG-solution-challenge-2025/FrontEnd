@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gdgs_mobile_app/util/icons/navigation_icon_icons.dart';
 import 'package:gdgs_mobile_app/util/router/routes.dart';
@@ -13,11 +15,11 @@ class FoodViewDetailScreen extends StatefulWidget {
   FoodViewDetailScreen({
     super.key,
     required this.foodName,
-    this.imgData,
+    required this.imgData,
   });
 
-  String foodName = 'Food Name';
-  String? imgData = "";
+  String foodName;
+  String imgData;
 
   @override
   State<FoodViewDetailScreen> createState() => _FoodViewDetailScreenState();
@@ -59,12 +61,13 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
             ),
           ),
         ],
+        scrolledUnderElevation: 0.0,
       ),
       body: Padding(
         padding: const EdgeInsets.only(
           top: defaultLayoutContentMargin,
-          left: defaultHorizontalMarginValue,
-          right: defaultHorizontalMarginValue,
+          left: defaultHorizontalMargin,
+          right: defaultHorizontalMargin,
         ),
         child: SizedBox(
           width: double.infinity,
@@ -79,12 +82,20 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                 ),
-                const SizedBox(height: defaultHorizontalMarginValue),
-                Image.asset(
-                  foodImageSamplePath,
-                  width: 180,
-                  height: 180,
-                ),
+                const SizedBox(height: defaultHorizontalMargin),
+                widget.imgData == imageNullMsg
+                    ? Image.asset(
+                        foodImageSamplePath,
+                        width: 180,
+                        height: 180,
+                      )
+                    : Image.file(
+                        File(
+                          widget.imgData,
+                        ),
+                        width: 180,
+                        height: 180,
+                      ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -102,7 +113,7 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
                             color: Theme.of(context).colorScheme.outline,
                           ),
                     ),
-                    const SizedBox(height: defaultHorizontalMarginValue),
+                    const SizedBox(height: defaultHorizontalMargin),
                     TitleText(
                       text: 'Origin',
                       style:
@@ -117,7 +128,7 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
                             color: Theme.of(context).colorScheme.outline,
                           ),
                     ),
-                    const SizedBox(height: defaultHorizontalMarginValue),
+                    const SizedBox(height: defaultHorizontalMargin),
                     TitleText(
                       text: 'Common Ingredients ',
                       style:
@@ -164,7 +175,7 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
                           )
                           .toList(),
                     ),
-                    const SizedBox(height: defaultHorizontalMarginValue),
+                    const SizedBox(height: defaultHorizontalMargin),
                     TitleText(
                       text: 'Watch out!',
                       style:
@@ -211,7 +222,7 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
                           )
                           .toList(),
                     ),
-                    const SizedBox(height: defaultHorizontalMarginValue),
+                    const SizedBox(height: defaultHorizontalMargin),
                     TitleText(
                       text: 'Local Favorites',
                       style:
@@ -235,7 +246,7 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
                         },
                       ),
                     ),
-                    const SizedBox(height: defaultHorizontalMarginValue),
+                    const SizedBox(height: defaultHorizontalMargin),
                     Column(
                       children: [
                         SizedBox(

@@ -16,5 +16,7 @@ const Color likeBtnColor = Color(0xFFD9626B);
 const Color startBtnColor = Color(0xFFFBDB5A);
 const Color loginTextColor = Color(0xFF2C2C2C);
 const Color signupTextColor = Color(0xFF5D5D5D);
+const Color boxShadowColor = Color(0xFF3A230F);
 const Color btnTextColor = Colors.white;
 const Color titleTextColor = Colors.black;
+const Color errorTextColor = Color(0xFFFF2929);

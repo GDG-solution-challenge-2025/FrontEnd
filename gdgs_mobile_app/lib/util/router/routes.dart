@@ -8,12 +8,15 @@ import 'package:gdgs_mobile_app/screen/navigators/user_setting_screen.dart';
 import 'package:gdgs_mobile_app/screen/user_control/login_screen.dart';
 import 'package:gdgs_mobile_app/screen/user_control/signup_screen.dart';
 import 'package:gdgs_mobile_app/screen/user_control/splash_screen.dart';
+import 'package:gdgs_mobile_app/screen/user_control/user_food_restriction_screen.dart';
+import 'package:gdgs_mobile_app/util/values/str_const.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRoute {
   static const String home = 'home';
   static const String foodUpload = 'food-upload';
   static const String foodViewDetail = 'food-view-detail';
+  static const String foodViewDetailGoHome = 'food-view-detail-go-home';
   static const String globalCuisine = 'global-cuisine';
   static const String foodHistory = 'food-history';
   static const String settings = 'settings';
@@ -21,6 +24,7 @@ class AppRoute {
   static const String login = 'login';
   static const String signup = 'signup';
   static const String splash = 'splash';
+  static const String foodRestrictionSelect = 'food-restriction-select';
 }
 
 //main navigator screens
@@ -49,32 +53,32 @@ final homeRoutes = GoRoute(
   routes: [
     globalCuisineRoutes,
     foodUploadRoutes,
+    foodViewDetailRoutes(AppRoute.foodViewDetailGoHome),
   ],
 );
 
 //util screens
 final foodUploadRoutes = GoRoute(
-  path: '/${AppRoute.foodUpload}',
-  name: AppRoute.foodUpload,
-  builder: (context, state) => const FoodUploadScreen(),
-  routes: [
-    foodViewDetailRoutes,
-  ],
-);
+    path: '/${AppRoute.foodUpload}',
+    name: AppRoute.foodUpload,
+    builder: (context, state) => const FoodUploadScreen(),
+    routes: [
+      foodViewDetailRoutes(AppRoute.foodViewDetail),
+    ]);
 
-final foodViewDetailRoutes = GoRoute(
-  path: '/${AppRoute.foodViewDetail}/:foodName/:imgData',
-  name: AppRoute.foodViewDetail,
-  builder: (context, state) => FoodViewDetailScreen(
-    foodName: state.pathParameters['foodName'] ?? 'Name not found',
-    imgData: state.pathParameters['imgData'],
-  ),
-);
+GoRoute foodViewDetailRoutes(String name) => GoRoute(
+      path: '/${AppRoute.foodViewDetail}/:foodName/:imgData',
+      name: name,
+      builder: (context, state) => FoodViewDetailScreen(
+        foodName: state.pathParameters['foodName'] ?? foodNamdNullMsg,
+        imgData: state.pathParameters['imgData'] ?? imageNullMsg,
+      ),
+    );
 
 final globalCuisineRoutes = GoRoute(
   path: '/${AppRoute.globalCuisine}',
   name: AppRoute.globalCuisine,
-  builder: (context, state) => const GlobalCuisineScreen(),
+  builder: (context, state) => GlobalCuisineScreen(),
 );
 
 final loginRoutes = GoRoute(
@@ -90,10 +94,19 @@ final signupRoutes = GoRoute(
   path: '/${AppRoute.signup}',
   name: AppRoute.signup,
   builder: (context, state) => const SignupScreen(),
+  routes: [
+    foodRestrictionSelectRoutes,
+  ],
 );
 
 final splashRoutes = GoRoute(
   path: '/${AppRoute.splash}',
   name: AppRoute.splash,
   builder: (context, state) => const SplashScreen(),
+);
+
+final foodRestrictionSelectRoutes = GoRoute(
+  path: '/${AppRoute.foodRestrictionSelect}',
+  name: AppRoute.foodRestrictionSelect,
+  builder: (context, state) => const UserFoodRestrictionScreen(),
 );

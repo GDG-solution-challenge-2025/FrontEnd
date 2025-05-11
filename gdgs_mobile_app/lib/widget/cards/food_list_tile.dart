@@ -10,6 +10,9 @@ class FoodListTile extends StatelessWidget {
     this.subTitle,
     this.foodImg,
     this.onTap,
+    this.boxDeco,
+    this.paddingValue,
+    this.marginValue,
   });
   String title;
   Widget? trailingWidget;
@@ -17,28 +20,33 @@ class FoodListTile extends StatelessWidget {
   Text? subTitle;
   String? foodImg;
   Function? onTap;
+  BoxDecoration? boxDeco;
+  EdgeInsetsGeometry? paddingValue;
+  EdgeInsetsGeometry? marginValue;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
       height: 60,
-      padding: const EdgeInsets.only(
-        left: defaultLayoutContentMargin,
-        right: defaultLayoutContentMargin,
-      ),
-      margin: const EdgeInsets.only(bottom: 8.0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(6.0),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-            blurRadius: 16,
-            offset: const Offset(0, 0),
+      padding: paddingValue ??
+          const EdgeInsets.only(
+            left: defaultLayoutContentMargin,
+            right: defaultLayoutContentMargin,
           ),
-        ],
-      ),
+      margin: marginValue ?? const EdgeInsets.only(bottom: 8.0),
+      decoration: boxDeco ??
+          BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainer,
+            borderRadius: BorderRadius.circular(6.0),
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                blurRadius: 16,
+                offset: const Offset(0, 0),
+              ),
+            ],
+          ),
       child: InkWell(
         onTap: () {
           if (onTap != null) {

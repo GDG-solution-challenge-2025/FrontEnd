@@ -19,12 +19,11 @@ class _SplashScreenState extends State<SplashScreen> {
         seconds: 1,
       ),
     );
-    return true;
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    print('splash');
     return Scaffold(
       body: Center(
         child: Column(
@@ -47,15 +46,10 @@ class _SplashScreenState extends State<SplashScreen> {
                   if (loginFlag != null) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       if (mounted) {
-                        print('login Flag is $loginFlag');
                         if (loginFlag) {
-                          print('go home');
                           context.goNamed(AppRoute.home);
-                          print('done home');
                         } else {
-                          print('go login');
                           context.goNamed(AppRoute.login);
-                          print('done login');
                         }
                       }
                     });
