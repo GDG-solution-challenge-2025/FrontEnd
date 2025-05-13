@@ -13,15 +13,18 @@ class UserLoginService {
     try {
       final response = await ApiService.instanse.post(
         ApiService.signup,
-        data: user.toJson(),
+        data: user.toSignupJson(),
       );
 
-      if (response.data["message"] == StateCode.successMsg) {
-        print("회원가입 성공");
+      if (response.statusCode == StateCode.success) {
+        print("회원가입 >> 회원가입 성공");
         return true;
+      } else if (response.statusCode == StateCode.fail) {
+        print("회원가입 >> ${response.data["message"]}");
+        return false;
       }
     } catch (err) {
-      print(err.toString());
+      print("회원가입 >> $err");
       return false;
     }
     return false;
@@ -29,36 +32,36 @@ class UserLoginService {
 
   static Future<bool?> userIdCheck(String id) async {
     try {
+      print("아이디 체크 >> 실행");
       final response = await ApiService.instanse.get(
         ApiService.checkId,
         data: {
-          "id",
-          "\"$id\"",
+          "id": id,
         },
       );
 
-      if (bool.parse(response.data["duplicate"])) {
-        print("아이디 중복 체크 ok");
-        return true;
-      }
+      print("아이디 체크 >> 끝");
+      print("아이디 체크 >> ${!bool.parse(response.data["duplicate"].toString())}");
+      print("아이디 체크 >> ${response.statusCode}");
+      return !bool.parse(response.data["duplicate"].toString());
     } catch (err) {
-      print(err.toString());
+      print("아이디 체크 >> $err");
       return false;
     }
-    return false;
   }
 
   static Future<UserModel?> userLogin(String id, String pw) async {
     try {
+      print("로그인 >> 시작");
       final response = await ApiService.instanse.post(
         ApiService.login,
         data: {
-          "id": "\"$id\"",
-          "pw": "\"$pw\"",
+          "id": id,
+          "pw": pw,
         },
       );
 
-      if (response.data["id"].toString() == id) {
+      if (response.statusCode == StateCode.success) {
         return UserModel.ServerfromMap(response.data);
       }
     } catch (err) {

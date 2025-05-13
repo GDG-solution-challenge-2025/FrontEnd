@@ -43,6 +43,15 @@ class UserModel {
     };
   }
 
+  Map<String, dynamic> toSignupMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'pw': pw,
+      'lang': lang.index,
+    };
+  }
+
   factory UserModel.SignupfromMap(Map<String, dynamic> map) {
     return UserModel(
       id: map['id'] as String,
@@ -61,6 +70,7 @@ class UserModel {
     );
   }
 
+  String toSignupJson() => json.encode(toSignupMap());
   String toJson() => json.encode(toMap());
 
   factory UserModel.SignupfromJson(String source) =>

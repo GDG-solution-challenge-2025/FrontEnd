@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-const baseServerUri = "https://39.118.135.87/API";
+const baseServerUri = "http://39.118.135.87/API";
 
 class ApiService {
   static const login = "/login";
@@ -31,12 +31,6 @@ class ApiService {
   static final Dio _dio = Dio(
     BaseOptions(
       baseUrl: baseServerUri,
-      connectTimeout: const Duration(
-        seconds: 10,
-      ),
-      receiveTimeout: const Duration(
-        minutes: 1,
-      ),
       headers: {
         "Content-Type": "application/json",
       },
