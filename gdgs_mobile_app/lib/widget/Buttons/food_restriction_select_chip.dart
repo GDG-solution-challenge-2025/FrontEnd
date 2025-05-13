@@ -7,11 +7,13 @@ class FoodRestrictionSelectChip extends StatefulWidget {
     required this.foodName,
     required this.selected,
     this.onTap,
+    this.onLongPress,
   });
 
   String foodName;
   bool selected;
   Function(bool)? onTap;
+  Function()? onLongPress;
 
   @override
   State<FoodRestrictionSelectChip> createState() =>
@@ -25,22 +27,28 @@ class _FoodRestrictionSelectChipState extends State<FoodRestrictionSelectChip> {
       margin: const EdgeInsets.only(
         right: 8.0,
       ),
-      child: ChoiceChip(
-        showCheckmark: false,
-        selected: widget.selected,
-        onSelected: (value) {
-          if (widget.onTap != null) {
-            print("opTap in on selected $value");
-            widget.onTap!(value);
+      child: InkWell(
+        onLongPress: () {
+          if (widget.onLongPress != null) {
+            widget.onLongPress!();
           }
         },
-        selectedColor: chipSelectColor,
-        backgroundColor: chipUnSelectColor,
-        label: Text(
-          widget.foodName,
-          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                color: chipTextColor,
-              ),
+        child: ChoiceChip(
+          showCheckmark: false,
+          selected: widget.selected,
+          onSelected: (value) {
+            if (widget.onTap != null) {
+              widget.onTap!(value);
+            }
+          },
+          selectedColor: chipSelectColor,
+          backgroundColor: chipUnSelectColor,
+          label: Text(
+            widget.foodName,
+            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                  color: chipTextColor,
+                ),
+          ),
         ),
       ),
     );

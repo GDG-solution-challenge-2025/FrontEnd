@@ -3,28 +3,32 @@ import 'dart:convert';
 
 import 'package:gdgs_mobile_app/service/userService/user_login_service.dart';
 
-class UserDataModel {
+class UserModel {
   String id;
   String name;
-  String pw;
+  String? pw;
+  String? session;
   Language lang;
-  UserDataModel({
+  UserModel({
     required this.id,
     required this.name,
-    required this.pw,
+    this.pw,
+    this.session,
     required this.lang,
   });
 
-  UserDataModel copyWith({
+  UserModel copyWith({
     String? id,
     String? name,
     String? pw,
+    String? session,
     Language? lang,
   }) {
-    return UserDataModel(
+    return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
       pw: pw ?? this.pw,
+      session: pw ?? this.session,
       lang: lang ?? this.lang,
     );
   }
@@ -34,12 +38,13 @@ class UserDataModel {
       'id': id,
       'name': name,
       'pw': pw,
+      'session': session,
       'lang': lang.index,
     };
   }
 
-  factory UserDataModel.fromMap(Map<String, dynamic> map) {
-    return UserDataModel(
+  factory UserModel.SignupfromMap(Map<String, dynamic> map) {
+    return UserModel(
       id: map['id'] as String,
       name: map['name'] as String,
       pw: map['pw'] as String,
@@ -47,10 +52,19 @@ class UserDataModel {
     );
   }
 
+  factory UserModel.ServerfromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['id'] as String,
+      name: map['name'] as String,
+      session: map['session'] as String,
+      lang: Language.values[map['lang'] as int],
+    );
+  }
+
   String toJson() => json.encode(toMap());
 
-  factory UserDataModel.fromJson(String source) =>
-      UserDataModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory UserModel.SignupfromJson(String source) =>
+      UserModel.SignupfromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -58,7 +72,7 @@ class UserDataModel {
   }
 
   @override
-  bool operator ==(covariant UserDataModel other) {
+  bool operator ==(covariant UserModel other) {
     if (identical(this, other)) return true;
 
     return other.name == name &&

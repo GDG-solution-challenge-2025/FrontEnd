@@ -1,6 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:gdgs_mobile_app/models/food_ai_detail.dart';
+import 'package:gdgs_mobile_app/service/foodService/food_img_upload_service.dart';
 import 'package:gdgs_mobile_app/util/icons/navigation_icon_icons.dart';
 import 'package:gdgs_mobile_app/util/router/routes.dart';
 import 'package:gdgs_mobile_app/util/values/color_const.dart';
@@ -14,11 +14,9 @@ import 'package:go_router/go_router.dart';
 class FoodViewDetailScreen extends StatefulWidget {
   FoodViewDetailScreen({
     super.key,
-    required this.foodName,
     required this.imgData,
   });
 
-  String foodName;
   String imgData;
 
   @override
@@ -28,16 +26,31 @@ class FoodViewDetailScreen extends StatefulWidget {
 class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
   bool isLiked = false;
 
-  List<String> foodIngredients = [
-    'Rice cake',
-    'Fish cake',
-    'Green onion',
-    'Egg',
-    'Chili paste',
-    'Sugar',
-    'Soy sauce',
-    'Sesame oil',
-  ];
+  FoodAiDetail foodAiDetail = FoodAiDetail(
+    sidx: 1,
+    imgUri: foodImageSamplePath,
+    food: "food",
+    description: "description",
+    origin: "origin",
+    howToEat: "howToEat",
+    ingredients: ["ingredients"],
+    cantIngredients: ["cantIngredients"],
+  );
+
+  Future<void> foodAiDetailDataUpdate() async {
+    try {
+      FoodAiDetail? responseData =
+          await FoodImgUploadService.foodImgUpload(widget.imgData);
+
+      if (responseData != null) {
+        setState(() {
+          foodAiDetail = responseData;
+        });
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,237 +85,289 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
         child: SizedBox(
           width: double.infinity,
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  widget.foodName,
-                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                        color: textThirdaryColor,
-                        fontWeight: FontWeight.bold,
+            child: FutureBuilder(
+              future: foodAiDetailDataUpdate(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.connectionState == ConnectionState.done) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        foodAiDetail.food,
+                        style:
+                            Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                  color: textThirdaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
-                ),
-                const SizedBox(height: defaultHorizontalMargin),
-                widget.imgData == imageNullMsg
-                    ? Image.asset(
-                        foodImageSamplePath,
-                        width: 180,
-                        height: 180,
-                      )
-                    : Image.file(
-                        File(
-                          widget.imgData,
-                        ),
-                        width: 180,
-                        height: 180,
-                      ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TitleText(
-                      text: 'What is it?',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                    ),
-                    const SizedBox(height: defaultLayoutContentMargin),
-                    Text(
-                      'A spicy and sweet Korean street food made with chewy rice cakes in a chili sauce.',
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
-                    ),
-                    const SizedBox(height: defaultHorizontalMargin),
-                    TitleText(
-                      text: 'Origin',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                    ),
-                    const SizedBox(height: defaultLayoutContentMargin),
-                    Text(
-                      'The original version of Tteokbokki dates back to the Joseon Dynasty, where it was made with soy sauce and served in royal courts. It has since envolved into various fusion versions like cheese tteokbokki, carbonara tteokbokki, and rosé tteokbokki.',
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: Theme.of(context).colorScheme.outline,
-                          ),
-                    ),
-                    const SizedBox(height: defaultHorizontalMargin),
-                    TitleText(
-                      text: 'Common Ingredients ',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                    ),
-                    const SizedBox(height: defaultLayoutContentMargin),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: foodIngredients
-                          .map(
-                            (item) => Padding(
-                              padding: const EdgeInsets.only(bottom: 6.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    '• ',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium!
-                                        .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .outline,
-                                        ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      item,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium!
-                                          .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .outline,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                      const SizedBox(height: defaultHorizontalMargin),
+                      foodAiDetail.imgUri == imageNullMsg
+                          ? Image.asset(
+                              foodImageSamplePath,
+                              width: 180,
+                              height: 180,
+                            )
+                          : Image.network(
+                              foodAiDetail.imgUri,
+                              width: 180,
+                              height: 180,
                             ),
-                          )
-                          .toList(),
-                    ),
-                    const SizedBox(height: defaultHorizontalMargin),
-                    TitleText(
-                      text: 'Watch out!',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                    ),
-                    const SizedBox(height: defaultLayoutContentMargin),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: foodIngredients
-                          .map(
-                            (item) => Padding(
-                              padding: const EdgeInsets.only(bottom: 6.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    '• ',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium!
-                                        .copyWith(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .error,
-                                        ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      item,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium!
-                                          .copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .outline,
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                    const SizedBox(height: defaultHorizontalMargin),
-                    TitleText(
-                      text: 'Local Favorites',
-                      style:
-                          Theme.of(context).textTheme.headlineSmall!.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                    ),
-                    const SizedBox(height: defaultLayoutContentMargin),
-                    SizedBox(
-                      height: 180,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 5,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return LocalFavoriteCard(
-                            storeName: 'Store Name $index',
-                            storeContent: 'Store Content $index',
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: defaultHorizontalMargin),
-                    Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          height: 40,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TitleText(
+                            text: 'What is it?',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+                          const SizedBox(height: defaultLayoutContentMargin),
+                          Text(
+                            foodAiDetail.description,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
+                          ),
+                          const SizedBox(height: defaultHorizontalMargin),
+                          TitleText(
+                            text: 'Origin',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+                          const SizedBox(height: defaultLayoutContentMargin),
+                          Text(
+                            foodAiDetail.origin,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
+                          ),
+                          const SizedBox(height: defaultHorizontalMargin),
+                          TitleText(
+                            text: 'How to eat',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+                          const SizedBox(height: defaultLayoutContentMargin),
+                          Text(
+                            foodAiDetail.howToEat,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.outline,
+                                ),
+                          ),
+                          const SizedBox(height: defaultHorizontalMargin),
+                          TitleText(
+                            text: 'Common Ingredients ',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+                          const SizedBox(height: defaultLayoutContentMargin),
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TitleText(
-                                text: "Other Food",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall!
-                                    .copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
+                            children: foodAiDetail.ingredients
+                                .map(
+                                  (item) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 6.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          '• ',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium!
+                                              .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .outline,
+                                              ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            item,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium!
+                                                .copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .outline,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                              ),
-                              TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "More",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge!
-                                      .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          const SizedBox(height: defaultHorizontalMargin),
+                          TitleText(
+                            text: 'Watch out!',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+                          const SizedBox(height: defaultLayoutContentMargin),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: foodAiDetail.cantIngredients
+                                .map(
+                                  (item) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 6.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          '• ',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium!
+                                              .copyWith(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .error,
+                                              ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            item,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium!
+                                                .copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .error,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                          const SizedBox(height: defaultHorizontalMargin),
+                          TitleText(
+                            text: 'Local Favorites',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                          ),
+                          const SizedBox(height: defaultLayoutContentMargin),
+                          SizedBox(
+                            height: 180,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: 5,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return LocalFavoriteCard(
+                                  storeName: 'Store Name $index',
+                                  storeContent: 'Store Content $index',
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: defaultHorizontalMargin),
+                          Column(
+                            children: [
+                              SizedBox(
+                                width: double.infinity,
+                                height: 40,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    TitleText(
+                                      text: "Other Food",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall!
+                                          .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        "More",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .copyWith(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                            ),
                                       ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 200,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 5,
+                                  itemBuilder: (context, index) {
+                                    return FoodImgCard(
+                                      foodName: 'foodName $index',
+                                      foodImgUrl: foodImageSamplePath,
+                                      onTap: () {},
+                                    );
+                                  },
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        SizedBox(
-                          height: 200,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (context, index) {
-                              return FoodImgCard(
-                                foodName: 'foodName $index',
-                                foodImgUrl: foodImageSamplePath,
-                                onTap: () {},
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                        ],
+                      ),
+                    ],
+                  );
+                } else {
+                  return Center(
+                    child: Text("Server Err\n ${snapshot.error.toString()}"),
+                  );
+                }
+              },
             ),
           ),
         ),

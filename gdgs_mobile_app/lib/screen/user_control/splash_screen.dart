@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:gdgs_mobile_app/service/token_storage.dart';
 import 'package:gdgs_mobile_app/util/router/routes.dart';
 import 'package:gdgs_mobile_app/util/values/str_const.dart';
 import 'package:go_router/go_router.dart';
@@ -14,12 +15,8 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Future<bool> autoLoginCheck() async {
-    await Future.delayed(
-      const Duration(
-        seconds: 1,
-      ),
-    );
-    return false;
+    final token = await TokenStorage().getToken();
+    return token != null;
   }
 
   @override

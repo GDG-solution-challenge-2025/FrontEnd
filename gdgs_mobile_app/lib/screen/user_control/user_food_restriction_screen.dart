@@ -3,8 +3,9 @@ import 'package:gdgs_mobile_app/models/food_restriction.dart';
 import 'package:gdgs_mobile_app/util/values/color_const.dart';
 import 'package:gdgs_mobile_app/util/values/layout_const.dart';
 import 'package:gdgs_mobile_app/util/values/str_const.dart';
-import 'package:gdgs_mobile_app/widget/Buttons/food_restriction_select_chip.dart';
 import 'package:gdgs_mobile_app/widget/Texts/title_text.dart';
+import 'package:gdgs_mobile_app/widget/components/food_restriction_chip_list.dart';
+import 'package:gdgs_mobile_app/widget/components/food_restriction_title.dart';
 
 class UserFoodRestrictionScreen extends StatefulWidget {
   const UserFoodRestrictionScreen({super.key});
@@ -59,6 +60,57 @@ class _UserFoodRestrictionScreenState extends State<UserFoodRestrictionScreen> {
       }
     }
     print(userSelect.length);
+  }
+
+  String? _enteredText; // 사용자가 입력한 텍스트를 저장할 변수
+
+  // 텍스트 입력 다이얼로그를 표시하는 함수
+  Future<String?> _showTextInputDialog(BuildContext context) async {
+    // TextField의 내용을 제어하기 위한 컨트롤러
+    final TextEditingController textFieldController = TextEditingController();
+    String? result;
+
+    // showDialog는 Future를 반환하며, 다이얼로그가 닫힐 때 값을 전달받을 수 있습니다.
+    result = await showDialog<String?>(
+      context: context,
+      // barrierDismissible: false, // 다이얼로그 바깥을 탭해도 닫히지 않게 하려면 true로 설정
+      builder: (BuildContext dialogContext) {
+        // 다이얼로그 내부의 context
+        return AlertDialog(
+          title: const Text('텍스트 입력'),
+          content: TextField(
+            controller: textFieldController, // 컨트롤러 연결
+            decoration: const InputDecoration(hintText: "여기에 내용을 입력하세요."),
+            autofocus: true, // 다이얼로그가 열리면 자동으로 포커스
+            onSubmitted: (value) {
+              // 엔터 키를 눌렀을 때 처리 (선택 사항)
+              Navigator.of(dialogContext).pop(value);
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('취소'),
+              onPressed: () {
+                Navigator.of(dialogContext)
+                    .pop(); // 다이얼로그를 닫고 아무 값도 반환하지 않음 (null 반환)
+              },
+            ),
+            TextButton(
+              child: const Text('확인'),
+              onPressed: () {
+                // TextField의 현재 텍스트를 가지고 다이얼로그를 닫음
+                Navigator.of(dialogContext).pop(textFieldController.text);
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    // 다이얼로그가 닫힌 후 컨트롤러를 반드시 dispose 해주어야 메모리 누수를 방지할 수 있습니다.
+    textFieldController.dispose();
+
+    return result; // 사용자가 입력한 텍스트 또는 null 반환
   }
 
   @override
@@ -178,6 +230,47 @@ class _UserFoodRestrictionScreenState extends State<UserFoodRestrictionScreen> {
               FoodRestrictionChipList(
                 foodList: othersFood,
                 isUserSelect: isUserSelect,
+                onLongPress: (item) async {
+                  final changFoodName = await _showTextInputDialog(context);
+                  if (changFoodName != null && changFoodName.isNotEmpty) {
+                    final itemIndex = othersFood.indexOf(item);
+                    if (itemIndex != -1) {
+                      setState(() {
+                        othersFood[itemIndex].foodName = changFoodName;
+                      });
+                    }
+                  }
+                },
+              ),
+              ChoiceChip(
+                label: Text(
+                  "ingredient",
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                        color: chipTextColor,
+                      ),
+                ),
+                selected: false,
+                selectedColor: chipSelectColor,
+                backgroundColor: chipUnSelectColor,
+                showCheckmark: false,
+                avatar: const Icon(
+                  Icons.add,
+                  size: 16.0,
+                  color: chipTextColor,
+                ),
+                onSelected: (selected) async {
+                  final value = await _showTextInputDialog(context);
+                  if (value != null && value.isNotEmpty) {
+                    setState(() {
+                      othersFood.add(
+                        FoodRestriction(
+                          foodName: value,
+                          selected: true,
+                        ),
+                      );
+                    });
+                  }
+                },
               ),
               ElevatedButton(
                 onPressed: () {},
@@ -189,70 +282,6 @@ class _UserFoodRestrictionScreenState extends State<UserFoodRestrictionScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class FoodRestrictionChipList extends StatelessWidget {
-  FoodRestrictionChipList({
-    super.key,
-    required this.foodList,
-    required this.isUserSelect,
-  });
-
-  List<FoodRestriction> foodList;
-  Function(FoodRestriction) isUserSelect;
-
-  @override
-  Widget build(BuildContext context) {
-    return Wrap(
-      direction: Axis.horizontal,
-      alignment: WrapAlignment.start,
-      children: foodList
-          .map(
-            (foodRestrictionItem) => FoodRestrictionSelectChip(
-              foodName: foodRestrictionItem.foodName,
-              selected: foodRestrictionItem.selected,
-              onTap: (selected) {
-                foodRestrictionItem.selected = selected;
-                print(
-                    'chip => ${foodRestrictionItem.foodName} // ${foodRestrictionItem.selected}');
-                isUserSelect(foodRestrictionItem);
-              },
-            ),
-          )
-          .toList(),
-    );
-  }
-}
-
-class FoodRestrictionTitle extends StatelessWidget {
-  FoodRestrictionTitle({
-    super.key,
-    required this.title,
-    required this.foodIcon,
-  });
-
-  String title;
-  String foodIcon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        TitleText(
-          text: "$title ",
-          style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                color: titleTextColor,
-              ),
-        ),
-        if (foodIcon != imageNullMsg)
-          Image.asset(
-            foodIcon,
-            width: 24,
-            height: 24,
-          ),
-      ],
     );
   }
 }

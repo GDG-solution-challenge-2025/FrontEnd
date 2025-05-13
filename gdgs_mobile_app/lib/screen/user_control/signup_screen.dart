@@ -16,11 +16,8 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _nameTextController = TextEditingController();
-
   final _idTextController = TextEditingController();
-
   final _pwTextController = TextEditingController();
-
   final _conPwTextController = TextEditingController();
 
   bool isNameEmptyCheck() => _nameTextController.text != "";
@@ -110,7 +107,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       print("$_conPwTextController");
                       print("$_nameTextController");
 
-                      UserDataModel user = UserDataModel(
+                      UserModel user = UserModel(
                         id: _idTextController.text,
                         name: _nameTextController.text,
                         pw: _pwTextController.text,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gdgs_mobile_app/service/userService/user_setting_service.dart';
 
 class UserSettingScreen extends StatelessWidget {
   const UserSettingScreen({super.key});
@@ -15,7 +16,15 @@ class UserSettingScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          final autoLoginData =
+              await UserSettingService.userAutoLoginGet(context);
+          if (!autoLoginData) {
+            if(context.mounted){
+              UserSettingService.userAutoLoginSet(context, true);
+            }
+          }
+        },
         child: const Icon(Icons.arrow_back),
       ),
     );

@@ -67,10 +67,9 @@ final foodUploadRoutes = GoRoute(
     ]);
 
 GoRoute foodViewDetailRoutes(String name) => GoRoute(
-      path: '/${AppRoute.foodViewDetail}/:foodName/:imgData',
+      path: '/${AppRoute.foodViewDetail}/:imgData',
       name: name,
       builder: (context, state) => FoodViewDetailScreen(
-        foodName: state.pathParameters['foodName'] ?? foodNamdNullMsg,
         imgData: state.pathParameters['imgData'] ?? imageNullMsg,
       ),
     );

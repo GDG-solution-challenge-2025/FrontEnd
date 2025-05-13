@@ -127,7 +127,6 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
                   context.goNamed(
                     AppRoute.foodViewDetail,
                     pathParameters: {
-                      'foodName': 'foodName1',
                       'imgData':
                           imageFile != null ? imageFile!.path : imageNullMsg,
                     },
