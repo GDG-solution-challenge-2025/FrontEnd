@@ -5,6 +5,7 @@ import 'package:gdgs_mobile_app/util/router/routes.dart';
 import 'package:gdgs_mobile_app/util/values/color_const.dart';
 import 'package:gdgs_mobile_app/util/values/layout_const.dart';
 import 'package:gdgs_mobile_app/util/values/number_const.dart';
+import 'package:gdgs_mobile_app/util/values/style_const.dart';
 import 'package:gdgs_mobile_app/widget/Texts/title_text.dart';
 import 'package:go_router/go_router.dart';
 
@@ -159,17 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    elevation: btnElevation,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(
-                          textFieldBorderRadius,
-                        ),
-                      ),
-                    ),
-                  ),
+                  style: defaultElavetionBtnStyle,
                   child: Text(
                     'Login',
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(

@@ -1,4 +1,4 @@
-import 'package:gdgs_mobile_app/models/food_ai_detail.dart';
+import 'package:gdgs_mobile_app/models/food/food_ai_detail.dart';
 
 enum FoodPostLiked { unable, enable }
 

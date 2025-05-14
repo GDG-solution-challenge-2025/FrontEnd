@@ -1,4 +1,5 @@
-import 'package:gdgs_mobile_app/models/food_like_post.dart';
+import 'package:dio/dio.dart';
+import 'package:gdgs_mobile_app/models/food/food_like_post.dart';
 import 'package:gdgs_mobile_app/service/api_service.dart';
 import 'package:gdgs_mobile_app/service/token_storage.dart';
 
@@ -19,7 +20,8 @@ class FoodPostLikeService {
         } else {
           print(response.data["code"].toString());
         }
-      } catch (err) {
+      } on DioException catch (err) {
+        ApiService.printErrorMsage("foodImgUpload", err.response!);
         print(err.toString());
       }
     }
@@ -41,7 +43,8 @@ class FoodPostLikeService {
         } else {
           print(response.data["code"].toString());
         }
-      } catch (err) {
+      } on DioException catch (err) {
+        ApiService.printErrorMsage("foodImgUpload", err.response!);
         print(err.toString());
       }
     }

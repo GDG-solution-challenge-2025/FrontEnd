@@ -3,9 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gdgs_mobile_app/util/router/routes.dart';
 import 'package:gdgs_mobile_app/util/values/layout_const.dart';
-import 'package:gdgs_mobile_app/util/values/str_const.dart';
-import 'package:gdgs_mobile_app/widget/Buttons/food_switch_ocr_btn.dart';
 import 'package:gdgs_mobile_app/widget/Texts/title_text.dart';
+import 'package:gdgs_mobile_app/widget/button/food_switch_ocr_btn.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -126,10 +125,7 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
                 onPressed: () {
                   context.goNamed(
                     AppRoute.foodViewDetail,
-                    pathParameters: {
-                      'imgData':
-                          imageFile != null ? imageFile!.path : imageNullMsg,
-                    },
+                    extra: imageFile,
                   );
                 },
                 style: ElevatedButton.styleFrom(

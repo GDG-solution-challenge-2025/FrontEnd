@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gdgs_mobile_app/service/token_storage.dart';
+import 'package:gdgs_mobile_app/service/userService/user_setting_service.dart';
 import 'package:gdgs_mobile_app/util/router/routes.dart';
 import 'package:gdgs_mobile_app/util/values/str_const.dart';
 import 'package:go_router/go_router.dart';
@@ -14,9 +15,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  Future<bool> autoLoginCheck() async {
+  Future<bool> autoLoginCheck(BuildContext context) async {
     final token = await TokenStorage().getToken();
-    return token != null;
+    if (token != null) {
+      if (context.mounted) {
+        final autoLoginSetting =
+            await UserSettingService.userAutoLoginGet(context);
+        return autoLoginSetting;
+      }
+    }
+    return false;
   }
 
   @override
@@ -32,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 240,
             ),
             FutureBuilder(
-              future: autoLoginCheck(),
+              future: autoLoginCheck(context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
@@ -42,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   final loginFlag = snapshot.data;
                   if (loginFlag != null) {
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (mounted) {
+                      if (context.mounted) {
                         if (loginFlag) {
                           context.goNamed(AppRoute.home);
                         } else {

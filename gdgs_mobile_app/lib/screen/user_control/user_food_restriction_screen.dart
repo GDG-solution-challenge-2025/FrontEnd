@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:gdgs_mobile_app/models/food_restriction.dart';
+import 'package:gdgs_mobile_app/models/food/food_ingredients.dart';
+import 'package:gdgs_mobile_app/models/food/food_restriction.dart';
 import 'package:gdgs_mobile_app/util/values/color_const.dart';
 import 'package:gdgs_mobile_app/util/values/layout_const.dart';
 import 'package:gdgs_mobile_app/util/values/str_const.dart';
+import 'package:gdgs_mobile_app/util/values/style_const.dart';
 import 'package:gdgs_mobile_app/widget/Texts/title_text.dart';
 import 'package:gdgs_mobile_app/widget/components/food_restriction_chip_list.dart';
 import 'package:gdgs_mobile_app/widget/components/food_restriction_title.dart';
+import 'package:gdgs_mobile_app/widget/dialog/show_cancel_delete_dialog.dart';
+import 'package:gdgs_mobile_app/widget/dialog/show_ok_cancel_dialog.dart';
 
 class UserFoodRestrictionScreen extends StatefulWidget {
   const UserFoodRestrictionScreen({super.key});
@@ -16,7 +22,7 @@ class UserFoodRestrictionScreen extends StatefulWidget {
 }
 
 class _UserFoodRestrictionScreenState extends State<UserFoodRestrictionScreen> {
-  final List<FoodRestriction> othersFood = [
+  List<FoodRestriction> othersFood = [
     FoodRestriction(
       foodName: "Egg",
       selected: false,
@@ -62,55 +68,18 @@ class _UserFoodRestrictionScreenState extends State<UserFoodRestrictionScreen> {
     print(userSelect.length);
   }
 
-  String? _enteredText; // 사용자가 입력한 텍스트를 저장할 변수
+  Map<String, int> toIngredientsMap(List<FoodRestriction> restrictionList) {
+    return {
+      for (var restriction in restrictionList)
+        restriction.foodName.toLowerCase(): restriction.selected ? 1 : 0
+    };
+  }
 
-  // 텍스트 입력 다이얼로그를 표시하는 함수
-  Future<String?> _showTextInputDialog(BuildContext context) async {
-    // TextField의 내용을 제어하기 위한 컨트롤러
-    final TextEditingController textFieldController = TextEditingController();
-    String? result;
-
-    // showDialog는 Future를 반환하며, 다이얼로그가 닫힐 때 값을 전달받을 수 있습니다.
-    result = await showDialog<String?>(
-      context: context,
-      // barrierDismissible: false, // 다이얼로그 바깥을 탭해도 닫히지 않게 하려면 true로 설정
-      builder: (BuildContext dialogContext) {
-        // 다이얼로그 내부의 context
-        return AlertDialog(
-          title: const Text('텍스트 입력'),
-          content: TextField(
-            controller: textFieldController, // 컨트롤러 연결
-            decoration: const InputDecoration(hintText: "여기에 내용을 입력하세요."),
-            autofocus: true, // 다이얼로그가 열리면 자동으로 포커스
-            onSubmitted: (value) {
-              // 엔터 키를 눌렀을 때 처리 (선택 사항)
-              Navigator.of(dialogContext).pop(value);
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('취소'),
-              onPressed: () {
-                Navigator.of(dialogContext)
-                    .pop(); // 다이얼로그를 닫고 아무 값도 반환하지 않음 (null 반환)
-              },
-            ),
-            TextButton(
-              child: const Text('확인'),
-              onPressed: () {
-                // TextField의 현재 텍스트를 가지고 다이얼로그를 닫음
-                Navigator.of(dialogContext).pop(textFieldController.text);
-              },
-            ),
-          ],
-        );
-      },
-    );
-
-    // 다이얼로그가 닫힌 후 컨트롤러를 반드시 dispose 해주어야 메모리 누수를 방지할 수 있습니다.
-    textFieldController.dispose();
-
-    return result; // 사용자가 입력한 텍스트 또는 null 반환
+  Map<String, dynamic> toOtherIngredientsMap(
+      List<FoodRestriction> restrictionList) {
+    return {
+      "ingredients": restrictionList.map((item) => item.foodName).toList(),
+    };
   }
 
   @override
@@ -231,12 +200,18 @@ class _UserFoodRestrictionScreenState extends State<UserFoodRestrictionScreen> {
                 foodList: othersFood,
                 isUserSelect: isUserSelect,
                 onLongPress: (item) async {
-                  final changFoodName = await _showTextInputDialog(context);
-                  if (changFoodName != null && changFoodName.isNotEmpty) {
-                    final itemIndex = othersFood.indexOf(item);
-                    if (itemIndex != -1) {
+                  final itemIndex = othersFood.indexOf(item);
+                  if (itemIndex != -1) {
+                    final changFoodName =
+                        await ShowModifyDialog.showTextModifytDialog(
+                            context, othersFood[itemIndex].foodName);
+                    if (changFoodName != null) {
                       setState(() {
                         othersFood[itemIndex].foodName = changFoodName;
+                      });
+                    } else {
+                      setState(() {
+                        othersFood.removeAt(itemIndex);
                       });
                     }
                   }
@@ -259,21 +234,59 @@ class _UserFoodRestrictionScreenState extends State<UserFoodRestrictionScreen> {
                   color: chipTextColor,
                 ),
                 onSelected: (selected) async {
-                  final value = await _showTextInputDialog(context);
+                  print("못 먹는 음식 추가 >> 시작");
+                  final value =
+                      await ShowOkCancelDialog.showTextInputDialog(context);
+                  print("못 먹는 음식 추가 >> 값 받아오기 $value");
                   if (value != null && value.isNotEmpty) {
+                    print("못 먹는 음식 추가 >> list에 추가");
                     setState(() {
-                      othersFood.add(
-                        FoodRestriction(
-                          foodName: value,
-                          selected: true,
-                        ),
+                      final addItme = FoodRestriction(
+                        foodName: value,
+                        selected: true,
                       );
+                      othersFood.add(addItme);
+                      isUserSelect(addItme);
                     });
+                    print("못 먹는 음식 추가 >> list = ${othersFood.last.foodName}");
                   }
                 },
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  var userSelectList = userSelect
+                      .where((item) =>
+                          othersFood
+                              .firstWhere(
+                                (subItem) => item.foodName == subItem.foodName,
+                                orElse: () => FoodRestriction(
+                                    foodName: "null", selected: false),
+                              )
+                              .foodName ==
+                          "null")
+                      .toList();
+                  var userSelectOtherList = userSelect
+                      .where((item) =>
+                          othersFood
+                              .firstWhere(
+                                (subItem) => item.foodName == subItem.foodName,
+                                orElse: () => FoodRestriction(
+                                    foodName: "null", selected: false),
+                              )
+                              .foodName !=
+                          "null")
+                      .toList();
+                  final foodFormat = toIngredientsMap(userSelectList);
+                  final foodIngredients =
+                      FoodIngredients.fromIngredientsMap(foodFormat);
+                  final foodOtherIngredients =
+                      toOtherIngredientsMap(userSelectOtherList);
+                  print("$foodIngredients");
+                  print(json.encode(foodOtherIngredients));
+                  print(json.encode(userSelectList));
+                  print(json.encode(userSelectOtherList));
+                },
+                style: defaultElavetionBtnStyle,
                 child: const Text(
                   "Save",
                 ),

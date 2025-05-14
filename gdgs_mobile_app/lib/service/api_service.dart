@@ -31,11 +31,22 @@ class ApiService {
   static final Dio _dio = Dio(
     BaseOptions(
       baseUrl: baseServerUri,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      connectTimeout: const Duration(
+        seconds: 10,
+      ),
+      receiveTimeout: const Duration(
+        minutes: 1,
+      ),
+      sendTimeout: const Duration(
+        minutes: 1,
+      ),
     ),
   );
+
+  static void printErrorMsage(String title, Response<dynamic> response) =>
+      print(
+        "$title >> ${response.statusCode} => ${response.data["code"]} // ${response.data["message"]}",
+      );
 }
 
 class StateCode {

@@ -10,8 +10,8 @@ class FoodAiDetail {
   String description;
   String origin;
   String howToEat;
-  List<String> ingredients;
-  List<String> cantIngredients;
+  List<String>? ingredients;
+  List<String>? cantIngredients;
   FoodAiDetail({
     required this.sidx,
     required this.imgUri,
@@ -19,8 +19,8 @@ class FoodAiDetail {
     required this.description,
     required this.origin,
     required this.howToEat,
-    required this.ingredients,
-    required this.cantIngredients,
+    this.ingredients,
+    this.cantIngredients,
   });
 
   FoodAiDetail copyWith({
@@ -48,7 +48,7 @@ class FoodAiDetail {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'sidx': sidx,
-      'imgUri': imgUri,
+      'imgURL': imgUri,
       'food': food,
       'description': description,
       'origin': origin,
@@ -61,14 +61,32 @@ class FoodAiDetail {
   factory FoodAiDetail.fromMap(Map<String, dynamic> map) {
     return FoodAiDetail(
       sidx: map['sidx'] as int,
-      imgUri: map['imgUri'] as String,
-      food: map['food'] as String,
-      description: map['description'] as String,
-      origin: map['origin'] as String,
-      howToEat: map['howToEat'] as String,
-      ingredients: List<String>.from(map['ingredients'] as List<String>),
-      cantIngredients:
-          List<String>.from(map['cantIngredients'] as List<String>),
+      imgUri: map['imgURL'] as String? ?? "Not Found",
+      food: map['food'] as String? ?? "Not Found",
+      description: map['description'] as String? ?? "Not Found",
+      origin: map['origin'] as String? ?? "Not Found",
+      howToEat: map['howToEat'] as String? ?? "Not Found",
+    );
+  }
+
+  factory FoodAiDetail.fromListMap(
+      Map<String, dynamic> map, List<dynamic> inList, List<dynamic> cantList) {
+    var ingredientsList =
+        inList.map((item) => item.toString()).toList(growable: true);
+    var cantIngredientsList =
+        cantList.map((item) => item.toString()).toList(growable: true);
+
+    print("foodImgUpload >> $ingredientsList");
+    print("foodImgUpload >> $cantIngredientsList");
+    return FoodAiDetail(
+      sidx: map['sidx'] as int,
+      imgUri: map['imgURL'] as String,
+      food: map['food'] as String? ?? "Not Found",
+      description: map['description'] as String? ?? "Not Found",
+      origin: map['origin'] as String? ?? "Not Found",
+      howToEat: map['howToEat'] as String? ?? "Not Found",
+      ingredients: ingredientsList,
+      cantIngredients: cantIngredientsList,
     );
   }
 
@@ -79,7 +97,7 @@ class FoodAiDetail {
 
   @override
   String toString() {
-    return 'FoodAiDetail(sidx: $sidx, imgUri: $imgUri, food: $food, description: $description, origin: $origin, howToEat: $howToEat, ingredients: $ingredients, cantIngredients: $cantIngredients)';
+    return 'FoodAiDetail(sidx: $sidx, imgURL: $imgUri, food: $food, description: $description, origin: $origin, howToEat: $howToEat, ingredients: $ingredients, cantIngredients: $cantIngredients)';
   }
 
   @override

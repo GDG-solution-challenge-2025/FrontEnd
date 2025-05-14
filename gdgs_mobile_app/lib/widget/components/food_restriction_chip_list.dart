@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gdgs_mobile_app/models/food_restriction.dart';
-import 'package:gdgs_mobile_app/widget/Buttons/food_restriction_select_chip.dart';
+import 'package:gdgs_mobile_app/models/food/food_restriction.dart';
+import 'package:gdgs_mobile_app/widget/button/food_restriction_select_chip.dart';
 
 class FoodRestrictionChipList extends StatelessWidget {
   FoodRestrictionChipList({

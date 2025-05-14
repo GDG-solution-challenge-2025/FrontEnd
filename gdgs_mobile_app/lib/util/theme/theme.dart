@@ -6,7 +6,7 @@ import 'package:gdgs_mobile_app/util/values/str_const.dart';
 
 ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
-  primaryColor: mainColor,
+  primaryColor: primaryColor,
   colorScheme: lightColorScheme,
   scaffoldBackgroundColor: Colors.white,
   textTheme: textTheme,

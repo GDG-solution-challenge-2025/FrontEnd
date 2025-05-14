@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gdgs_mobile_app/service/userService/user_setting_service.dart';
+import 'package:gdgs_mobile_app/util/router/routes.dart';
+import 'package:go_router/go_router.dart';
 
 class UserSettingScreen extends StatelessWidget {
   const UserSettingScreen({super.key});
@@ -10,22 +11,23 @@ class UserSettingScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('User Setting Screen'),
       ),
-      body: const Center(
-        child: Text(
-          'Welcome to the User Setting Screen!',
+      body: Center(
+        child: Column(
+          children: [
+            ListTile(
+              title: const Text("auto Login setting"),
+              onTap: () {
+                context.goNamed(AppRoute.settingAutoLogin);
+              },
+            ),
+            ListTile(
+              title: const Text("food restriction"),
+              onTap: () {
+                context.goNamed(AppRoute.settingfoodRestrictionSelect);
+              },
+            ),
+          ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final autoLoginData =
-              await UserSettingService.userAutoLoginGet(context);
-          if (!autoLoginData) {
-            if(context.mounted){
-              UserSettingService.userAutoLoginSet(context, true);
-            }
-          }
-        },
-        child: const Icon(Icons.arrow_back),
       ),
     );
   }

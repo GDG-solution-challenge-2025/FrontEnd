@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:gdgs_mobile_app/models/user_model.dart';
 import 'package:gdgs_mobile_app/service/api_service.dart';
 
@@ -23,9 +24,9 @@ class UserLoginService {
         print("회원가입 >> ${response.data["message"]}");
         return false;
       }
-    } catch (err) {
-      print("회원가입 >> $err");
-      return false;
+    } on DioException catch (err) {
+      ApiService.printErrorMsage("foodImgUpload", err.response!);
+      print(err.toString());
     }
     return false;
   }
@@ -44,10 +45,11 @@ class UserLoginService {
       print("아이디 체크 >> ${!bool.parse(response.data["duplicate"].toString())}");
       print("아이디 체크 >> ${response.statusCode}");
       return !bool.parse(response.data["duplicate"].toString());
-    } catch (err) {
-      print("아이디 체크 >> $err");
-      return false;
+    } on DioException catch (err) {
+      ApiService.printErrorMsage("foodImgUpload", err.response!);
+      print(err.toString());
     }
+    return false;
   }
 
   static Future<UserModel?> userLogin(String id, String pw) async {
@@ -64,8 +66,9 @@ class UserLoginService {
       if (response.statusCode == StateCode.success) {
         return UserModel.ServerfromMap(response.data);
       }
-    } catch (err) {
-      print(err);
+    } on DioException catch (err) {
+      ApiService.printErrorMsage("foodImgUpload", err.response!);
+      print(err.toString());
     }
     return null;
   }
@@ -84,8 +87,9 @@ class UserLoginService {
       } else {
         print(response.data["message"].toString());
       }
-    } catch (err) {
-      print(err);
+    } on DioException catch (err) {
+      ApiService.printErrorMsage("foodImgUpload", err.response!);
+      print(err.toString());
     }
     return null;
   }

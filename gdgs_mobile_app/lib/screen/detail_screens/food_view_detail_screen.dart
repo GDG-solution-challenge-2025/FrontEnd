@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:gdgs_mobile_app/models/food_ai_detail.dart';
+import 'package:gdgs_mobile_app/models/food/food_ai_detail.dart';
 import 'package:gdgs_mobile_app/service/foodService/food_img_upload_service.dart';
 import 'package:gdgs_mobile_app/util/icons/navigation_icon_icons.dart';
 import 'package:gdgs_mobile_app/util/router/routes.dart';
@@ -10,6 +12,7 @@ import 'package:gdgs_mobile_app/widget/Texts/title_text.dart';
 import 'package:gdgs_mobile_app/widget/cards/food_img_card.dart';
 import 'package:gdgs_mobile_app/widget/cards/local_favorite_card.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FoodViewDetailScreen extends StatefulWidget {
   FoodViewDetailScreen({
@@ -17,7 +20,7 @@ class FoodViewDetailScreen extends StatefulWidget {
     required this.imgData,
   });
 
-  String imgData;
+  XFile? imgData;
 
   @override
   State<FoodViewDetailScreen> createState() => _FoodViewDetailScreenState();
@@ -39,13 +42,15 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
 
   Future<void> foodAiDetailDataUpdate() async {
     try {
+      if (widget.imgData == null) {
+        return;
+      }
       FoodAiDetail? responseData =
-          await FoodImgUploadService.foodImgUpload(widget.imgData);
-
+          await FoodImgUploadService.foodImgUpload(widget.imgData!);
+      print("foodAiDetailDataUpdate >> dataGet");
       if (responseData != null) {
-        setState(() {
-          foodAiDetail = responseData;
-        });
+        foodAiDetail = responseData;
+        print("foodAiDetailDataUpdate >> data done");
       }
     } catch (err) {
       print(err);
@@ -105,14 +110,14 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
                                 ),
                       ),
                       const SizedBox(height: defaultHorizontalMargin),
-                      foodAiDetail.imgUri == imageNullMsg
+                      widget.imgData == null
                           ? Image.asset(
                               foodImageSamplePath,
                               width: 180,
                               height: 180,
                             )
-                          : Image.network(
-                              foodAiDetail.imgUri,
+                          : Image.file(
+                              File(widget.imgData!.path),
                               width: 180,
                               height: 180,
                             ),
@@ -191,7 +196,7 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
                           const SizedBox(height: defaultLayoutContentMargin),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: foodAiDetail.ingredients
+                            children: foodAiDetail.ingredients!
                                 .map(
                                   (item) => Padding(
                                     padding: const EdgeInsets.only(bottom: 6.0),
@@ -240,7 +245,7 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
                           const SizedBox(height: defaultLayoutContentMargin),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: foodAiDetail.cantIngredients
+                            children: foodAiDetail.cantIngredients!
                                 .map(
                                   (item) => Padding(
                                     padding: const EdgeInsets.only(bottom: 6.0),

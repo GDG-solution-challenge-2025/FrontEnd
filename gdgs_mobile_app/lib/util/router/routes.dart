@@ -6,11 +6,12 @@ import 'package:gdgs_mobile_app/screen/navigators/food_recomend_screen.dart';
 import 'package:gdgs_mobile_app/screen/navigators/home_screen.dart';
 import 'package:gdgs_mobile_app/screen/navigators/user_setting_screen.dart';
 import 'package:gdgs_mobile_app/screen/user_control/login_screen.dart';
+import 'package:gdgs_mobile_app/screen/user_control/setting/auto_login_screen.dart';
 import 'package:gdgs_mobile_app/screen/user_control/signup_screen.dart';
 import 'package:gdgs_mobile_app/screen/user_control/splash_screen.dart';
 import 'package:gdgs_mobile_app/screen/user_control/user_food_restriction_screen.dart';
-import 'package:gdgs_mobile_app/util/values/str_const.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AppRoute {
   static const String home = 'home';
@@ -25,6 +26,9 @@ class AppRoute {
   static const String signup = 'signup';
   static const String splash = 'splash';
   static const String foodRestrictionSelect = 'food-restriction-select';
+  static const String settingAutoLogin = 'setting-auto-login';
+  static const String settingfoodRestrictionSelect =
+      'setting-food-restriction-select';
 }
 
 //main navigator screens
@@ -35,10 +39,13 @@ final foodRecomendRoutes = GoRoute(
 );
 
 final settingsRoutes = GoRoute(
-  path: '/${AppRoute.settings}',
-  name: AppRoute.settings,
-  builder: (context, state) => const UserSettingScreen(),
-);
+    path: '/${AppRoute.settings}',
+    name: AppRoute.settings,
+    builder: (context, state) => const UserSettingScreen(),
+    routes: [
+      settingAutoLoginRoutes,
+      settingfoodRestrictionSelectRoutes,
+    ]);
 
 final foodHistoryRoutes = GoRoute(
   path: '/${AppRoute.foodHistory}',
@@ -67,11 +74,14 @@ final foodUploadRoutes = GoRoute(
     ]);
 
 GoRoute foodViewDetailRoutes(String name) => GoRoute(
-      path: '/${AppRoute.foodViewDetail}/:imgData',
+      path: '/${AppRoute.foodViewDetail}',
       name: name,
-      builder: (context, state) => FoodViewDetailScreen(
-        imgData: state.pathParameters['imgData'] ?? imageNullMsg,
-      ),
+      builder: (context, state) {
+        XFile? imgFile = state.extra as XFile?;
+        return FoodViewDetailScreen(
+          imgData: imgFile,
+        );
+      },
     );
 
 final globalCuisineRoutes = GoRoute(
@@ -107,5 +117,18 @@ final splashRoutes = GoRoute(
 final foodRestrictionSelectRoutes = GoRoute(
   path: '/${AppRoute.foodRestrictionSelect}',
   name: AppRoute.foodRestrictionSelect,
+  builder: (context, state) => const UserFoodRestrictionScreen(),
+);
+
+///Setting screen page
+final settingAutoLoginRoutes = GoRoute(
+  path: '/${AppRoute.settingAutoLogin}',
+  name: AppRoute.settingAutoLogin,
+  builder: (context, state) => const AutoLoginScreen(),
+);
+
+final settingfoodRestrictionSelectRoutes = GoRoute(
+  path: '/${AppRoute.settingfoodRestrictionSelect}',
+  name: AppRoute.settingfoodRestrictionSelect,
   builder: (context, state) => const UserFoodRestrictionScreen(),
 );

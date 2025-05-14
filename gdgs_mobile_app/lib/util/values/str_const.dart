@@ -1,4 +1,4 @@
-import 'package:gdgs_mobile_app/models/food_restriction.dart';
+import 'package:gdgs_mobile_app/models/food/food_restriction.dart';
 
 ///Main string constants for the app
 const String mainHomeTitle = 'Search for food culture';
