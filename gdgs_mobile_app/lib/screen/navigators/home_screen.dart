@@ -6,6 +6,7 @@ import 'package:gdgs_mobile_app/widget/Texts/title_text.dart';
 import 'package:gdgs_mobile_app/widget/button/ranking_chip.dart';
 import 'package:gdgs_mobile_app/widget/cards/food_img_card.dart';
 import 'package:gdgs_mobile_app/widget/cards/food_list_tile.dart';
+import 'package:gdgs_mobile_app/widget/components/gemini_box.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -59,26 +60,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     width: double.infinity,
                     height: 160,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        context.goNamed(AppRoute.foodUpload);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        elevation: 4.0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                      ),
-                      child: const Text(
-                        'photo',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    child: InkWell(
+                        onTap: () {
+                          context.goNamed(
+                            AppRoute.foodUpload,
+                          );
+                        },
+                        child: const GeminiBox()),
                   ),
                 ],
               ),

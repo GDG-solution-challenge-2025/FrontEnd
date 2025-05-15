@@ -5,6 +5,8 @@ import 'package:gdgs_mobile_app/util/router/routes.dart';
 import 'package:gdgs_mobile_app/util/values/layout_const.dart';
 import 'package:gdgs_mobile_app/widget/Texts/title_text.dart';
 import 'package:gdgs_mobile_app/widget/button/food_switch_ocr_btn.dart';
+import 'package:gdgs_mobile_app/widget/components/gemini_box.dart';
+import 'package:gdgs_mobile_app/widget/dialog/show_img_bottom_sheet.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -54,7 +56,15 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("food upload init");
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print("build food Upload screen");
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
@@ -82,25 +92,19 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
               text: 'Search for food culture',
             ),
             const SizedBox(height: defaultLayoutContentMargin),
-            SizedBox(
-              width: 280,
-              height: 160,
+            InkWell(
+              onTap: () => showFoodCultureOptions(
+                context,
+                onSelectPhoto: _pickImageFromCamera,
+                onSelectAlbum: _pickImageFromGallery,
+              ),
               child: imageFile != null
-                  ? Image.file(File(imageFile!.path))
-                  : ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        elevation: 4.0,
-                        shadowColor: Colors.black.withOpacity(0.25),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                      ),
-                      onPressed: _pickImageFromCamera,
-                      child: const Text('phto upload'),
-                    ),
+                  ? Image.file(
+                      File(imageFile!.path),
+                      width: 280,
+                      height: 160,
+                    )
+                  : const GeminiBox(),
             ),
             const SizedBox(height: defaultLayoutContentMargin),
             SizedBox(
@@ -123,10 +127,16 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
               height: 48,
               child: ElevatedButton(
                 onPressed: () {
-                  context.goNamed(
-                    AppRoute.foodViewDetail,
-                    extra: imageFile,
-                  );
+                  if (isPhotoState) {
+                    context.goNamed(
+                      AppRoute.foodViewDetail,
+                      extra: imageFile,
+                    );
+                  } else {
+                    context.goNamed(
+                      AppRoute.ocrListView,
+                    );
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
@@ -137,7 +147,12 @@ class _FoodUploadScreenState extends State<FoodUploadScreen> {
                     borderRadius: BorderRadius.circular(6.0),
                   ),
                 ),
-                child: const Text('data'),
+                child: Text(
+                  'Search',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
               ),
             ),
           ],

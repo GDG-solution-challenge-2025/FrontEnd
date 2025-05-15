@@ -17,6 +17,7 @@ class AppRoute {
   static const String home = 'home';
   static const String foodUpload = 'food-upload';
   static const String foodViewDetail = 'food-view-detail';
+  static const String foodViewDetailText = 'food-view-detail-text';
   static const String foodViewDetailGoHome = 'food-view-detail-go-home';
   static const String globalCuisine = 'global-cuisine';
   static const String foodHistory = 'food-history';
@@ -27,6 +28,7 @@ class AppRoute {
   static const String splash = 'splash';
   static const String foodRestrictionSelect = 'food-restriction-select';
   static const String settingAutoLogin = 'setting-auto-login';
+  static const String ocrListView = 'ocr-list-view';
   static const String settingfoodRestrictionSelect =
       'setting-food-restriction-select';
 }
@@ -71,6 +73,7 @@ final foodUploadRoutes = GoRoute(
     builder: (context, state) => const FoodUploadScreen(),
     routes: [
       foodViewDetailRoutes(AppRoute.foodViewDetail),
+      foodViewDetailRoutes(AppRoute.foodViewDetailText),
     ]);
 
 GoRoute foodViewDetailRoutes(String name) => GoRoute(
@@ -80,6 +83,17 @@ GoRoute foodViewDetailRoutes(String name) => GoRoute(
         XFile? imgFile = state.extra as XFile?;
         return FoodViewDetailScreen(
           imgData: imgFile,
+        );
+      },
+    );
+
+GoRoute foodViewDetailTextRoutes(String name) => GoRoute(
+      path: '/${AppRoute.foodViewDetailText}',
+      name: name,
+      builder: (context, state) {
+        String? foodName = state.extra as String?;
+        return FoodViewDetailScreen(
+          foodName: foodName,
         );
       },
     );
@@ -130,5 +144,11 @@ final settingAutoLoginRoutes = GoRoute(
 final settingfoodRestrictionSelectRoutes = GoRoute(
   path: '/${AppRoute.settingfoodRestrictionSelect}',
   name: AppRoute.settingfoodRestrictionSelect,
+  builder: (context, state) => const UserFoodRestrictionScreen(),
+);
+
+final ocrListViewRoutes = GoRoute(
+  path: '/${AppRoute.ocrListView}',
+  name: AppRoute.ocrListView,
   builder: (context, state) => const UserFoodRestrictionScreen(),
 );

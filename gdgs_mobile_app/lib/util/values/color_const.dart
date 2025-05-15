@@ -20,3 +20,4 @@ const Color boxShadowColor = Color(0xFF3A230F);
 const Color btnTextColor = Colors.white;
 const Color titleTextColor = Colors.black;
 const Color errorTextColor = Color(0xFFFF2929);
+const Color boxBackgroundColor = Color(0xFFF2ECEB);

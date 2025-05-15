@@ -16,6 +16,7 @@ const foodIconDairyPath = 'assets/image/icon/dairy_icon.png';
 const foodIconSoybeanPath = 'assets/image/icon/soybean_icon.png';
 
 const logoImagePath = 'assets/image/icon/logo.png';
+const geminiImagePath = 'assets/image/gemini_img.png';
 
 const imageNullMsg = 'image Null';
 

@@ -4,23 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:gdgs_mobile_app/models/food/food_ai_detail.dart';
 import 'package:gdgs_mobile_app/service/foodService/food_img_upload_service.dart';
 import 'package:gdgs_mobile_app/util/icons/navigation_icon_icons.dart';
-import 'package:gdgs_mobile_app/util/router/routes.dart';
 import 'package:gdgs_mobile_app/util/values/color_const.dart';
 import 'package:gdgs_mobile_app/util/values/layout_const.dart';
 import 'package:gdgs_mobile_app/util/values/str_const.dart';
 import 'package:gdgs_mobile_app/widget/Texts/title_text.dart';
 import 'package:gdgs_mobile_app/widget/cards/food_img_card.dart';
 import 'package:gdgs_mobile_app/widget/cards/local_favorite_card.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FoodViewDetailScreen extends StatefulWidget {
   FoodViewDetailScreen({
     super.key,
-    required this.imgData,
+    this.imgData,
+    this.foodName,
   });
 
   XFile? imgData;
+  String? foodName;
 
   @override
   State<FoodViewDetailScreen> createState() => _FoodViewDetailScreenState();
@@ -57,26 +57,38 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
     }
   }
 
+  Future<void> foodAiDetailDataTextUpdate() async {
+    try {
+      if (widget.imgData == null) {
+        return;
+      }
+      FoodAiDetail? responseData =
+          await FoodImgUploadService.menuTextUpload(widget.foodName!);
+      print("foodAiDetailDataUpdate >> dataGet");
+      if (responseData != null) {
+        foodAiDetail = responseData;
+        print("foodAiDetailDataUpdate >> data done");
+      }
+    } catch (err) {
+      print(err);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {
-              context.pushNamed(AppRoute.foodUpload);
-            },
-            icon: IconButton(
-              icon: Icon(
-                isLiked ? NavigationIcon.heart : NavigationIcon.heartOutline,
-                color: isLiked ? likeBtnColor : null,
-              ),
-              onPressed: () {
-                setState(() {
-                  isLiked = !isLiked;
-                });
-              },
+            icon: Icon(
+              isLiked ? NavigationIcon.heart : NavigationIcon.heartOutline,
+              color: isLiked ? likeBtnColor : null,
             ),
+            onPressed: () {
+              setState(() {
+                isLiked = !isLiked;
+              });
+            },
           ),
         ],
         scrolledUnderElevation: 0.0,
@@ -91,7 +103,9 @@ class _FoodViewDetailScreenState extends State<FoodViewDetailScreen> {
           width: double.infinity,
           child: SingleChildScrollView(
             child: FutureBuilder(
-              future: foodAiDetailDataUpdate(),
+              future: widget.imgData != null
+                  ? foodAiDetailDataUpdate()
+                  : foodAiDetailDataTextUpdate(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
